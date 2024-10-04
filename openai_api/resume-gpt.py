@@ -49,7 +49,8 @@ def generate_prompts(resume_text, jd):
     name_prompt=f"""
     this is a resume text. what is the name of the person of whom this resume is of: : {resume_text}
 
-    Give me the name of the applicant only - that is, do not include any other words in your response. """
+    Give me the name of the applicant only - that is, do not include any other words in your response. 
+    If no name is available, please return First Last. """
 
     match_prompt=f"""
     Act as a skilled and experienced Application Tracking System
@@ -63,7 +64,8 @@ def generate_prompts(resume_text, jd):
     This is the resume text: {resume_text}
     This is the job description: {jd}
 
-    Give me the percentage number only - that is, do not include any other words in your response. """
+    Give me the percentage number only - that is, do not include any other words in your response. 
+    If the match is absolutely horrible, give 0%. If there is no information on the resume, please return -1%. """
 
     length_prompt=f"""
     Act as a skilled and experienced Application Tracking System
@@ -73,7 +75,8 @@ def generate_prompts(resume_text, jd):
 
     Your task is to give me the number of words present in the following resume text: {resume_text} 
 
-    Give me the number of words only in the full resume, in this format: "words: 100"
+    Give me the number of words only in the full resume, in this format: "words: 100". 
+    If not possible, please return "words: -1".
     """
 
     education_prestige_prompt=f"""
@@ -89,6 +92,8 @@ def generate_prompts(resume_text, jd):
     This is the resume text: {resume_text} 
 
     Give me the ranking of the educational prestige (from 0-10) only - that is, do not include any other words in your response.
+    
+    If not possible, please return -1. 
     """
 
     gpa_prompt=f"""
@@ -103,7 +108,7 @@ def generate_prompts(resume_text, jd):
     This is the resume text: {resume_text} 
 
     Give me the GPA of the person only - that is, do not include any other words in your response. If there are multiple GPAs, 
-    only use the one for the most recent educational institution.
+    only use the one for the most recent educational institution. If there is no GPA available, return -1. 
     """ 
 
     input_prompts = {'name': name_prompt, 'match': match_prompt, 'length': length_prompt, 'education_prestige': education_prestige_prompt, 'gpa': gpa_prompt}
@@ -120,7 +125,7 @@ def get_resume_stats(resume_pdf_path, resume_id, jd):
     resume_stats[resume_id] = {}
 
     for resume_variable in resume_variables:
-        prompt = input_prompts[resume_variable]     
+        prompt = input_prompts[resume_variable]
         stream = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
@@ -142,19 +147,33 @@ def get_resume_stats(resume_pdf_path, resume_id, jd):
 
     return resume_stats
 
-def write_to_csv(resume_stats):
-    with open('resume_stats.csv', mode='a') as resume_stats_file:
+def write_to_csv(all_resume_stats):
+    with open('resume_stats.csv', mode='a', newline='') as resume_stats_file:
         resume_stats_writer = csv.writer(resume_stats_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
         resume_stats_writer.writerow(['Name', 'Resume ID', 'Match', 'Length', 'Education Prestige', 'GPA'])
-        for resume_id in resume_stats.keys():
-            data = resume_stats[resume_id]
-            print(data['name'])
-            resume_stats_writer.writerow([data['name'], resume_id, data['match'][:-1], data['length'], data['education_prestige'], data['gpa']])
+
+        for resume_id, data in all_resume_stats.items():
+            resume_stats_writer.writerow(
+                [data['name'], resume_id, data['match'][:-1], data['length'], data['education_prestige'], data['gpa']])
 
 def main():
-    resume_stats = get_resume_stats(example_resume, resume_id, example_jd)
-    #print(resume_stats)
-    write_to_csv(resume_stats)
-    
+    resume_folder = select_folder()
+    job_description_file = select_job_description()
+
+    all_resume_stats = {}
+
+    if resume_folder and job_description_file:
+        resume_dict = associate_resumes_with_ids(resume_folder)
+
+        for resume_id, resume_path in resume_dict.items():
+            resume_stats = get_resume_stats(resume_path, resume_id, job_description_file)
+            all_resume_stats.update(resume_stats)
+
+        write_to_csv(all_resume_stats)
+
+    else:
+        print("Selection was cancelled or incomplete.")
+
 if __name__ == "__main__":
     main()
