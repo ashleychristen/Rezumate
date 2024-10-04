@@ -1,21 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter } from 'next/router'; // Import useRouter for navigation
 import styles from '../styles/new.module.css';
 
 const Shortlisted = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  // Array of files (you can adjust these paths)
-  const files = [
-    { name: 'Resume 1', path: '/documents/ashley_resume.pdf' }, 
-    { name: 'Resume 2', path: '/documents/john_resume.pdf' },
-    { name: 'Cover Letter', path: '/documents/cover_letter.pdf' },
-  ];
-
-  const handleFileClick = (path) => {
-    setSelectedFile(path);
-  };
+  const router = useRouter(); // Initialize useRouter
+  const { filePath, fileName } = router.query; // Destructure filePath and fileName from the query
 
   return (
     <div className={styles.container}>
@@ -34,30 +24,23 @@ const Shortlisted = () => {
 
       {/* Content area with buttons and PDF viewer */}
       <div className={styles.content}>
-        {/* File buttons on the left */}
-        <div className={styles.buttonList}>
-          <ul>
-            {files.map((file, index) => (
-              <li key={index}>
-                <button onClick={() => handleFileClick(file.path)}>
-                  {file.name}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* PDF Viewer on the right */}
-        {selectedFile && (
-          <div className={styles.pdfViewer}>
-            <iframe
-              src={selectedFile}
-              width="1200"
-              height="1000"
-              style={{ border: 'none' }}
-              title="PDF Viewer"
-            />
+        {/* Display the selected file information */}
+        {filePath && fileName ? (
+          <div>
+            <h2>Selected File: {fileName}</h2>
+            {/* PDF Viewer */}
+            <div className={styles.pdfViewer}>
+              <iframe
+                src={filePath}
+                width="1200"
+                height="1000"
+                style={{ border: 'none' }}
+                title="PDF Viewer"
+              />
+            </div>
           </div>
+        ) : (
+          <p>No file selected.</p> // Message if no file is selected
         )}
       </div>
     </div>

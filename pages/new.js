@@ -5,33 +5,27 @@ import styles from '../styles/new.module.css';
 const New = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [sliderValue, setSliderValue] = useState(0); // State to manage slider value
+  const [pdfFiles, setPdfFiles] = useState([]); // State to store fetched PDF files
 
-  const [pdfFiles, setPdfFiles] = useState([]);
-
-  // Fetch uploaded PDF files
-  const files = [
-    { name: 'Resume 1', path: '/documents/ashley_resume.pdf' }, 
-    { name: 'Resume 2', path: '/documents/john_resume.pdf' },
-    { name: 'Cover Letter', path: '/documents/cover_letter.pdf' },
-  ];
+  // Fetch uploaded PDF files on component mount
+  useEffect(() => {
+    const fetchUploadedFiles = async () => {
+      const response = await fetch('/api/files'); // Fetch from the correct endpoint
+      if (response.ok) {
+        const data = await response.json();
+        setPdfFiles(data); // Assuming your API returns an array of file objects
+      } else {
+        console.error('Failed to fetch files');
+      }
+    };
+  
+    fetchUploadedFiles();
+  }, []);
 
   const handleFileClick = (path) => {
     setSelectedFile(path);
   };
 
-  useEffect(() => {
-    // Fetch the uploaded files or any other necessary data on component mount
-    const fetchUploadedFiles = async () => {
-      // Example: Fetch uploaded files if needed
-      const response = await fetch('/api/getUploadedFiles'); // Assuming you have an API to fetch uploaded files
-      const data = await response.json();
-      setUploadedFiles(data); // Assuming your API returns an array of file objects
-    };
-
-    fetchUploadedFiles();
-  }, []);
-
-  
   const handleSliderChange = (event) => {
     setSliderValue(event.target.value);
   };
@@ -56,11 +50,18 @@ const New = () => {
         {/* File buttons on the left */}
         <div className={styles.buttonList}>
           <ul>
-            {files.map((file, index) => (
+            {pdfFiles.map((file, index) => (
               <li key={index}>
                 <button onClick={() => handleFileClick(file.path)}>
                   {file.name}
                 </button>
+                {/* Add Shortlist and Reject Buttons */}
+                <Link href={`/shortlist?filePath=${encodeURIComponent(file.path)}&fileName=${encodeURIComponent(file.name)}`}>
+                  <button className={styles.shortlistButton}>Shortlist</button>
+                </Link>
+                <Link href={`/rejection?filePath=${encodeURIComponent(file.path)}&fileName=${encodeURIComponent(file.name)}`}>
+                  <button className={styles.rejectButton}>Reject</button>
+                </Link>
               </li>
             ))}
           </ul>
@@ -71,7 +72,7 @@ const New = () => {
           <div className={styles.pdfViewer}>
             <iframe
               src={selectedFile}
-              width="1200"
+              width="1100"
               height="1000"
               style={{ border: 'none' }}
               title="PDF Viewer"
@@ -81,7 +82,7 @@ const New = () => {
 
         {/* Slider for rating */}
         <div className={styles.sliderContainer}>
-          <label>SLIDE!!</label>
+          <label>How well would you rate this resume?</label>
           <div>
             <span>0</span>
             <input

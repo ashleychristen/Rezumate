@@ -6,6 +6,13 @@
     color: var(--deep-blue);  /* Deep Blue for the title */
     font-size: 2.5em;  /* Larger font size for emphasis */
   }
+
+  .header {
+    text-align: left;  /* Center the title */
+    margin: 20px 0;  /* Add some space above and below */
+    color: var(--deep-blue);  /* Deep Blue for the title */
+    font-size: 2em;  /* Larger font size for emphasis */
+  }
   
   .description {
     text-align: center;  /* Center the description text */
@@ -54,4 +61,20 @@
   .uploadSection button:hover {
     background-color: #003366; /* Darker shade on hover */
   }
-  
+  /* Dashboard.module.css */
+.uploadButton {
+  background-color: #0056b3; /* Blue color */
+  color: white; /* Change text color to white for contrast */
+  border: none; /* Remove default border */
+  padding: 10px 20px; /* Add some padding */
+  border-radius: 5px; /* Round the corners */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  font-size: 16px; /* Adjust font size */
+  display: inline-block; /* Allow margin and padding */
+  margin-bottom: 10px; /* Space between buttons */
+  font-family: 'Times New Roman', sans-serif;
+}
+
+.uploadButton:hover {
+  background-color: #003366; /* Darken the button on hover */
+}

@@ -52,9 +52,25 @@ const Dashboard = () => {
 
       {/* PDF Upload Section */}
       <div className={styles.uploadSection}>
-        <h2>Upload a PDF</h2>
-        <input type="file" accept=".pdf" onChange={handleFileChange} />
-        <button onClick={handleUpload}>Upload PDF</button>
+      <h2 className={styles.header}>Upload a PDF</h2>
+
+        {/* Hidden file input */}
+        <input
+          type="file"
+          accept=".pdf"
+          id="file-upload"
+          onChange={handleFileChange}
+          style={{ display: 'none' }} // Hide the default file input
+        />
+
+        {/* Custom upload button */}
+        <label htmlFor="file-upload" className={styles.uploadButton}>
+          Browse...
+        </label>
+        <span style={{ marginRight: '10px' }}></span>
+        <button onClick={handleUpload} className={styles.uploadButton}>
+          Upload PDF
+        </button>
       </div>
 
       {/* Image display */}
@@ -67,9 +83,6 @@ const Dashboard = () => {
           priority
         />
       </div>
-
-      {/* Link to New Documents Page */}
-      <Link href="/new">Go to New Documents</Link>
     </div>
   );
 };
