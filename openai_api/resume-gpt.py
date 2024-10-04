@@ -3,53 +3,37 @@ from authenticate import get_openai_client
 import PyPDF2
 import csv
 import os
+import tkinter as tk
+from tkinter import filedialog
+
 
 client = get_openai_client()
 
-example_resume = "/Users/hhpfi/Downloads/Fiona Hoang Resume.pdf"
-resume_id = 1
-example_jd = """
-About the job
-GENERAL APPLICATION BANK
+# Ask user to select folder
+def select_folder():
+    root = tk.Tk()
+    root.withdraw()  # Hide the root window
+    folder_selected = filedialog.askdirectory(title="Select Folder of Resumes")
+    return folder_selected
 
-4 or 8 months internship | Full time | 37.5 hours per week | Start in January 2025 | End in April 2025 or August 2025 | Valcourt | University level 
+# Ask user to select job description file
+def select_job_description():
+    root = tk.Tk()
+    root.withdraw()  # Hide the root window
+    file_selected = filedialog.askopenfilename(
+        title="Select Job Description Text File",
+        filetypes=[("Text Files", "*.txt")]
+    )
+    return file_selected
 
-The Experience Of a Lifetime
-
-BRP's internship program is truly one of a kind. We hire more than 350 interns a year from all backgrounds, skill levels and professions. And many of these internships lead to employment at BRP because we believe in investing in our talent to help them reach their full potential. At BRP, you'll work with an experienced professional team and have the opportunity to work on challenging projects with real impact. Will you be our next generation? Apply now!
-
-Any benefits? There's no shortage of them for our interns!
-
-Competitive salary and a bonus for returning to the internship: we know how hard you work, so we offer you what you deserve. 
-Flexible working hours: whether you're in the office or working from home, you'll always be supported by your team. 
-The most stimulating work environment: progress doesn't come from standing still. You'll have the chance to learn and be challenged by tomorrow's top talent. 
-Social activities: the cohort of 100 interns is never bored with a full calendar of activities organized by the social committee! 
-
-Become Our Next Generation If
-
-You are pursuing a degree in Software Engineering, Computer Engineering or a related field. 
-You demonstrate ambition, passion, self-reliance and resilience. 
-
-Overview Of The Recruitment Process
-
-The internship team will analyze all applications received on the career site and on university platforms and will share those that are selected with the internship managers. Don't hesitate to add a project portfolio, your transcript, your academic involvement and anything else that sets you apart! 
-The manager of an internship that might be suitable for you will invite you to a one-on-one interview if your application has caught their attention. You may be contacted by several managers! Please note that you will only be contacted if you are selected for an interview. 
-After the interview, if your application is successful, you may be offered an internship at BRP! 
-
-WELCOME TO BRP
-
-As a world leader in recreational vehicles and boats, we create innovative ways to get around on snow, water, asphalt, land and... even in the air. Our corporate headquarters are in Valcourt, Quebec, but we offer internships in Sherbrooke and Montreal as well. We have manufacturing facilities around the world. We have more than 20,000 dynamic people, driven by the deep conviction that in work, as in life, it's not about the destination. It's the journey. It's your journey.
-
-THE ROAD SHOULD BELONG TO EVERYONE.
-
-We still live in a world where many feel the road is for other people. We believe we can make a difference. Moving people goes beyond making innovative products.
-
-We strive to nurture our people’s aspirations, to exceed our riders’ expectations and stand in solidarity with all the communities that ride with us.
-
-Building a more inclusive BRP with no barriers for those who seek to ride starts from within, and we need everyone's commitment, drive and dedication to make it a reality.
-
-You want to be sure not to miss anything? Subscribe to our newsletter by clicking here!
-"""
+# Get resume files and assign IDs
+def associate_resumes_with_ids(resume_folder):
+    resumes = [f for f in os.listdir(resume_folder) if f.endswith(".pdf")]
+    resume_dict = {}
+    for i, resume in enumerate(resumes, start=1):
+        resume_path = os.path.join(resume_folder, resume)
+        resume_dict[i] = resume_path
+    return resume_dict
 
 # Open the PDF file
 def extract_resume_text(pdf_path):
@@ -60,9 +44,6 @@ def extract_resume_text(pdf_path):
             text = page.extract_text()
             resume_text += text + "\n"  # Combine text from each page
     return resume_text
-
-resume_text = extract_resume_text(example_resume)
-jd = example_jd
 
 def generate_prompts(resume_text, jd):
     name_prompt=f"""
