@@ -6,7 +6,7 @@ import os
 
 client = get_openai_client()
 
-example_resume = "/Users/leeyanqing2004/Desktop/Job Applications/Working Resume Docs/Yan Qing Lee - October Resume.pdf"
+example_resume = "/Users/hhpfi/Downloads/Fiona Hoang Resume.pdf"
 resume_id = 1
 example_jd = """
 About the job
@@ -164,7 +164,7 @@ def get_resume_stats(resume_pdf_path, resume_id, jd):
 def write_to_csv(resume_stats):
     with open('resume_stats.csv', mode='a') as resume_stats_file:
         resume_stats_writer = csv.writer(resume_stats_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        #resume_stats_writer.writerow(['Name', 'Resume ID', 'Match', 'Length', 'Education Prestige', 'GPA'])
+        resume_stats_writer.writerow(['Name', 'Resume ID', 'Match', 'Length', 'Education Prestige', 'GPA'])
         for resume_id in resume_stats.keys():
             data = resume_stats[resume_id]
             print(data['name'])
