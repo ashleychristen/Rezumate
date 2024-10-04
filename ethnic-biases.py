@@ -1,34 +1,22 @@
-import os
+from openai import OpenAI
 import requests
+import os
 
-# Access the OpenAI API key from environment variable
-api_key = os.getenv("OPENAI_API_KEY")
+api_key = os.getenv('OPENAI_API_KEY') 
 
-# Check if the API key was retrieved successfully
-if api_key:
-    print("API Key successfully retrieved!")
-else:
-    print("Failed to retrieve API Key.")
+client = OpenAI(
+  organization='org-AUTjzHJLNiOLA39QPHM8lXXy',
+  api_key=api_key
+)
 
-url = "https://api.openai.com/v1/chat/completions"
 
-headers = {
-    "Authorization": f"Bearer {api_key}",
-    "Content-Type": "application/json"
-}
+stream = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "Say this is a test"}],
+    stream=True,
+)
+for chunk in stream:
+    if chunk.choices[0].delta.content is not None:
+        print(chunk.choices[0].delta.content, end="")
 
-# Define the input data for the API
-data = {
-    "model": "gpt-3.5-turbo",  # You can choose different models
-    "messages": [{"role": "user", "content": "Hello, how are you?"}]
-}
-
-# Make the API request
-response = requests.post(url, headers=headers, json=data)
-
-# Check the response
-if response.status_code == 200:
-    result = response.json()
-    print(result["choices"][0]["message"]["content"])  # Print the model's response
-else:
-    print(f"Error: {response.status_code} - {response.text}")
+    
