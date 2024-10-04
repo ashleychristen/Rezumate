@@ -117,7 +117,6 @@ def generate_prompts(resume_text, jd):
 resume_variables = ["name", "match", "length", "education_prestige", "gpa"]
 
 def get_resume_stats(resume_pdf_path, resume_id, jd):
-
     resume_text = extract_resume_text(resume_pdf_path)
     input_prompts = generate_prompts(resume_text, jd)
 
@@ -136,16 +135,15 @@ def get_resume_stats(resume_pdf_path, resume_id, jd):
         if resume_variable == "length":
             for chunk in stream:
                 if chunk.choices[0].delta.content is not None:
-                    #print(chunk.choices[0].delta.content, end="\n")
                     resume_stats[resume_id][resume_variable] = chunk.choices[0].delta.content
         else:
             for chunk in stream:
                 if chunk.choices[0].delta.content is not None:
-                    #print(chunk.choices[0].delta.content, end="")
-                    string = string + chunk.choices[0].delta.content
-                resume_stats[resume_id][resume_variable] = string
+                    string += chunk.choices[0].delta.content
+            resume_stats[resume_id][resume_variable] = string
 
-    return resume_stats
+    # Extract the name to return it for biases.py
+    return resume_stats, resume_stats[resume_id]['name']
 
 def write_to_csv(all_resume_stats):
     with open('resume_stats.csv', mode='a', newline='') as resume_stats_file:
@@ -162,15 +160,22 @@ def main():
     job_description_file = select_job_description()
 
     all_resume_stats = {}
+    names = []  # List to store names
 
     if resume_folder and job_description_file:
         resume_dict = associate_resumes_with_ids(resume_folder)
 
         for resume_id, resume_path in resume_dict.items():
-            resume_stats = get_resume_stats(resume_path, resume_id, job_description_file)
+            resume_stats, name = get_resume_stats(resume_path, resume_id, job_description_file)
             all_resume_stats.update(resume_stats)
+            names.append(name.strip())  # Add the name to the list
 
         write_to_csv(all_resume_stats)
+
+        # Write names to a text file for biases.py to read
+        with open('names.txt', 'w') as names_file:
+            for name in names:
+                names_file.write(name + '\n')
 
     else:
         print("Selection was cancelled or incomplete.")
