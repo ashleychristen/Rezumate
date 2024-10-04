@@ -5,7 +5,7 @@ import csv
 
 client = get_openai_client()
 
-name = "Lee Dong-hyuck" # need to grab this from the resume
+name = "Jamie Foxx" # need to grab this from the resume
 
 def get_data():
     gender_score = ""
