@@ -2,7 +2,7 @@
 export default function handler(req, res) {
     if (req.method === 'POST') {
       const { value } = req.body;
-  
+        
       // You can save the value to a database or a file here.
       // For demonstration purposes, we'll just log it.
       console.log('Slider Value:', value);

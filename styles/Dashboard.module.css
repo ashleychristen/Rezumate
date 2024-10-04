@@ -35,3 +35,23 @@
     background-color: var(--muted-green);  /* Muted Green for hover effect */
   }
   
+  .uploadSection {
+    margin: 20px 0;
+  }
+  
+  .uploadSection input {
+    margin-right: 10px;
+  }
+  
+  .uploadSection button {
+    padding: 10px 20px;
+    background-color: #0056b3; /* Your chosen color */
+    color: white; /* Button text color */
+    border: none;
+    cursor: pointer;
+  }
+  
+  .uploadSection button:hover {
+    background-color: #003366; /* Darker shade on hover */
+  }
+  

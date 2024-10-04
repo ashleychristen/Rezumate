@@ -19,8 +19,18 @@ const Rejected = () => {
 
   return (
     <div className={styles.container}>
-      {/* Title at the very top */}
-      <h1 className={styles.title}>Rejected Documents</h1>
+      {/* Header with Home button on the far left and title centered */}
+      <div className={styles.header}>
+        <div className={styles.leftSection}>
+          <Link href="/">
+            <button className={styles.homeButton}>Home</button>
+          </Link>
+        </div>
+        <div className={styles.centerSection}>
+          <h1 className={styles.title}>Rejected Documents</h1>
+        </div>
+        <div className={styles.rightSection}></div> {/* Placeholder to balance flexbox */}
+      </div>
 
       {/* Content area with buttons and PDF viewer */}
       <div className={styles.content}>
