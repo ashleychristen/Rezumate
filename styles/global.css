@@ -1,0 +1,14 @@
+/* styles/globals.css */
+:root {
+    --light-gray: #F7F7F7;
+    --deep-blue: #2A4B7C;
+    --soft-coral: #FF6F61;
+    --charcoal: #333333;
+    --muted-green: #A3C6A1;
+  }
+  
+  body {
+    background-color: var(--light-gray);
+    color: var(--charcoal);
+  }
+  
