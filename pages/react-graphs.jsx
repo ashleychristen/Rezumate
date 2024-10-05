@@ -95,6 +95,7 @@ function App() {
 
   return (
     <>
+      
       <h1 className={styles.title}>Ethnicity vs Hire Score Analysis</h1>
 
       
@@ -146,7 +147,7 @@ function App() {
 
       {mediumMatchData.r > 0.05 && (
         <>
-          <h4 className={styles.header3}>High Match (70-100%) - R: {mediumMatchData.r.toFixed(2)}</h4>
+          <h4 className={styles.header3}>Medium Match (30-70%) - R: {mediumMatchData.r.toFixed(2)}</h4>
           <ResponsiveContainer width="100%" height={400}>
             <LineChart data={mediumMatchData.data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" />
