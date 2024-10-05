@@ -1,3 +1,5 @@
+// pages/api/upload.js
+
 import fs from 'fs';
 import formidable from 'formidable';
 import path from 'path';
@@ -18,11 +20,11 @@ const uploadHandler = (req, res) => {
       return res.status(500).json({ error: 'Something went wrong while uploading the file' });
     }
 
-    // Log the uploaded files
+    // Log the uploaded files for debugging
     console.log('Uploaded files:', files);
 
     // Ensure the file field name matches your upload form
-    const uploadedFile = files.pdf;
+    const uploadedFile = files.pdf; // Make sure the field name matches your upload form
 
     if (!uploadedFile || !uploadedFile.filepath) {
       console.error('File path is undefined');
@@ -39,7 +41,8 @@ const uploadHandler = (req, res) => {
         return res.status(500).json({ error: 'File upload failed' });
       }
 
-      // You can now use the file in tempDir for processing
+      // Log success and return the file path
+      console.log(`File uploaded successfully to ${tempDir}`);
       return res.status(200).json({ message: 'File uploaded successfully', path: tempDir });
     });
   });
