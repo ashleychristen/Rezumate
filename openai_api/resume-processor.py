@@ -3,36 +3,14 @@ import PyPDF2
 import csv
 import os
 import tkinter as tk
-from tkinter import filedialog
 from authenticate import get_openai_client
 
 client = get_openai_client()
 
-# Ask user to select folder
-def select_folder():
-    root = tk.Tk()
-    root.withdraw()
-    folder_selected = filedialog.askdirectory(title="Select Folder of Resumes")
-    return folder_selected
-
-# Ask user to select job description file
-def select_job_description():
-    root = tk.Tk()
-    root.withdraw()
-    file_selected = filedialog.askopenfilename(
-        title="Select Job Description Text File",
-        filetypes=[("Text Files", "*.txt")]
-    )
-    return file_selected
-
-# Get resume files and assign IDs
-def associate_resumes_with_ids(resume_folder):
-    resumes = [f for f in os.listdir(resume_folder) if f.endswith(".pdf")]
-    resume_dict = {}
-    for i, resume in enumerate(resumes, start=1):
-        resume_path = os.path.join(resume_folder, resume)
-        resume_dict[i] = resume_path
-    return resume_dict
+# Constants for file locations
+PDF_FOLDER = "public/documents"
+JOB_DESCRIPTION_FILE = "public/uploads/userInput.txt"
+VALUES_FILE = "values.csv"
 
 # Open the PDF file
 def extract_resume_text(pdf_path):
@@ -43,7 +21,6 @@ def extract_resume_text(pdf_path):
             text = page.extract_text()
             resume_text += text + "\n"
     return resume_text
-
 
 def generate_prompts(resume_text, jd):
     name_prompt = f"""
@@ -115,7 +92,6 @@ def generate_prompts(resume_text, jd):
                      'education_prestige': education_prestige_prompt, 'gpa': gpa_prompt}
     return input_prompts
 
-
 resume_variables = ["name", "match", "length", "education_prestige", "gpa"]
 
 def get_resume_stats(resume_pdf_path, resume_id, jd):
@@ -173,29 +149,40 @@ def get_bias_scores(name):
 
     return ethnicity_score, gender_score
 
-def write_to_csv(all_resume_stats):
+# Read values from values.csv
+def read_values_file():
+    values_dict = {}
+    with open(VALUES_FILE, mode='r') as file:
+        csv_reader = csv.DictReader(file)
+        for row in csv_reader:
+            resume_id = row['resume_id']
+            values_dict[resume_id] = row['hire_score']
+    return values_dict
+
+def write_to_csv(all_resume_stats, hire_scores):
     with open('final_resume_stats.csv', mode='a', newline='') as resume_stats_file:
         resume_stats_writer = csv.writer(resume_stats_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        resume_stats_writer.writerow(['Name', 'Resume ID', 'Match', 'Length', 'Education Prestige', 'GPA', 'Ethnicity Bias', 'Gender Bias'])
+        resume_stats_writer.writerow(['Name', 'Resume ID', 'Match', 'Length', 'Education Prestige', 'GPA', 'Ethnicity Bias', 'Gender Bias', 'Hire Score'])
 
         for resume_id, data in all_resume_stats.items():
             ethnicity_score, gender_score = get_bias_scores(data['name'])
-            resume_stats_writer.writerow([data['name'], resume_id, data['match'][:-1], data['length'], data['education_prestige'], data['gpa'], ethnicity_score, gender_score])
+            hire_score = hire_scores.get(resume_id, "N/A")
+            resume_stats_writer.writerow([data['name'], resume_id, data['match'][:-1], data['length'], data['education_prestige'], data['gpa'], ethnicity_score, gender_score, hire_score])
 
 def main():
-    resume_folder = select_folder()
-    job_description_file = select_job_description()
+    job_description_file = JOB_DESCRIPTION_FILE
 
     all_resume_stats = {}
+    hire_scores = read_values_file()
 
-    if resume_folder and job_description_file:
-        resume_dict = associate_resumes_with_ids(resume_folder)
+    if os.path.exists(PDF_FOLDER) and os.path.exists(job_description_file):
+        resume_dict = {f: os.path.join(PDF_FOLDER, f) for f in os.listdir(PDF_FOLDER) if f.endswith(".pdf")}
 
         for resume_id, resume_path in resume_dict.items():
             resume_stats, name = get_resume_stats(resume_path, resume_id, job_description_file)
             all_resume_stats.update(resume_stats)
 
-        write_to_csv(all_resume_stats)
+        write_to_csv(all_resume_stats, hire_scores)
 
     else:
         print("Selection was cancelled or incomplete.")
