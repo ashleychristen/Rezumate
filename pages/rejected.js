@@ -1,25 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useState } from 'react';
 import styles from '../styles/new.module.css';
 
 const Rejected = () => {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [rejectedFiles, setRejectedFiles] = useState([]); // Change to array to store multiple rejected files
 
-  // Array of files (you can adjust these paths)
-  const files = [
-    { name: 'Resume 1', path: '/documents/ashley_resume.pdf' }, 
-    { name: 'Resume 2', path: '/documents/john_resume.pdf' },
-    { name: 'Cover Letter', path: '/documents/cover_letter.pdf' },
-  ];
+  useEffect(() => {
+    // Retrieve the rejected files from local storage
+    const files = localStorage.getItem('rejectedFiles');
+    if (files) {
+      setRejectedFiles(JSON.parse(files));
+    }
+  }, []);
 
   const handleFileClick = (path) => {
     setSelectedFile(path);
   };
 
+  const handleDelete = (path) => {
+    // Filter out the deleted file and update local storage
+    const updatedFiles = rejectedFiles.filter(file => file.path !== path);
+    setRejectedFiles(updatedFiles);
+    localStorage.setItem('rejectedFiles', JSON.stringify(updatedFiles));
+  };
+
   return (
     <div className={styles.container}>
-      {/* Header with Home button on the far left and title centered */}
       <div className={styles.header}>
         <div className={styles.leftSection}>
           <Link href="/">
@@ -29,25 +36,29 @@ const Rejected = () => {
         <div className={styles.centerSection}>
           <h1 className={styles.title}>Rejected Documents</h1>
         </div>
-        <div className={styles.rightSection}></div> {/* Placeholder to balance flexbox */}
+        <div className={styles.rightSection}></div>
       </div>
 
-      {/* Content area with buttons and PDF viewer */}
       <div className={styles.content}>
-        {/* File buttons on the left */}
         <div className={styles.buttonList}>
-          <ul>
-            {files.map((file, index) => (
-              <li key={index}>
-                <button onClick={() => handleFileClick(file.path)}>
-                  {file.name}
-                </button>
-              </li>
-            ))}
-          </ul>
+          {rejectedFiles.length > 0 ? (
+            <ul>
+              {rejectedFiles.map((file, index) => (
+                <li key={index}>
+                  <button onClick={() => handleFileClick(file.path)}>
+                    {file.name}
+                  </button>
+                  <button onClick={() => handleDelete(file.path)} style={{ color: 'red' }}>
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No rejected files found.</p>
+          )}
         </div>
 
-        {/* PDF Viewer on the right */}
         {selectedFile && (
           <div className={styles.pdfViewer}>
             <iframe

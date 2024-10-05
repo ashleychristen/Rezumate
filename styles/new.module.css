@@ -175,3 +175,29 @@
   display: block;
   margin-bottom: 10px;
 }
+
+.pdfButton {
+  background-color: #f0f0f0; /* Default button color */
+  color: black;
+  /* Add other styles as needed */
+}
+
+.activeButton {
+  background-color: #d0d0d0; /* Darkened color when active */
+  color: black;
+  /* Add any other styles for the active state */
+}
+
+.submitButton {
+  background-color: #0070f3; /* Change to your desired color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px; /* Adjust margin for spacing */
+}
+
+.submitButton:hover {
+  background-color: #005bb5; /* Darken the button on hover */
+}

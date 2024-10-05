@@ -2,20 +2,27 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from '../styles/new.module.css';
 
-const Shortlisted = () => {
+const Shortlist = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [shortlistedFile, setShortlistedFile] = useState(null);
+  const [shortlistedFiles, setShortlistedFiles] = useState([]); // Change to array to store multiple shortlisted files
 
   useEffect(() => {
-    // Retrieve the shortlisted file from local storage
-    const file = localStorage.getItem('shortlistedFile');
-    if (file) {
-      setShortlistedFile(JSON.parse(file));
+    // Retrieve the shortlisted files from local storage
+    const files = localStorage.getItem('shortlistedFiles');
+    if (files) {
+      setShortlistedFiles(JSON.parse(files));
     }
   }, []);
 
   const handleFileClick = (path) => {
     setSelectedFile(path);
+  };
+
+  const handleDelete = (path) => {
+    // Filter out the deleted file and update local storage
+    const updatedFiles = shortlistedFiles.filter(file => file.path !== path);
+    setShortlistedFiles(updatedFiles);
+    localStorage.setItem('shortlistedFiles', JSON.stringify(updatedFiles));
   };
 
   return (
@@ -34,14 +41,21 @@ const Shortlisted = () => {
 
       <div className={styles.content}>
         <div className={styles.buttonList}>
-          {shortlistedFile && (
+          {shortlistedFiles.length > 0 ? (
             <ul>
-              <li>
-                <button onClick={() => handleFileClick(shortlistedFile.path)}>
-                  {shortlistedFile.name}
-                </button>
-              </li>
+              {shortlistedFiles.map((file, index) => (
+                <li key={index}>
+                  <button onClick={() => handleFileClick(file.path)}>
+                    {file.name}
+                  </button>
+                  <button onClick={() => handleDelete(file.path)} style={{ color: 'red' }}>
+                    Delete
+                  </button>
+                </li>
+              ))}
             </ul>
+          ) : (
+            <p>No shortlisted files found.</p>
           )}
         </div>
 
@@ -61,4 +75,4 @@ const Shortlisted = () => {
   );
 };
 
-export default Shortlisted;
+export default Shortlist;
