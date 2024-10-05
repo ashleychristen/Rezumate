@@ -2,6 +2,7 @@ import fs from 'fs';
 import formidable from 'formidable';
 import path from 'path';
 
+// Configure API options
 export const config = {
   api: {
     bodyParser: false,
@@ -20,8 +21,8 @@ const uploadHandler = (req, res) => {
     // Log the uploaded files
     console.log('Uploaded files:', files);
 
-    // Access the first file in the array (adjust the field name if necessary)
-    const uploadedFile = files.pdf[0];
+    // Ensure the file field name matches your upload form
+    const uploadedFile = files.pdf;
 
     if (!uploadedFile || !uploadedFile.filepath) {
       console.error('File path is undefined');
@@ -29,21 +30,17 @@ const uploadHandler = (req, res) => {
     }
 
     const oldPath = uploadedFile.filepath;
-    const targetDir = path.join(process.cwd(), 'public/documents'); // Adjusted to use process.cwd()
-    const newPath = path.join(targetDir, uploadedFile.originalFilename); // Correctly construct the new path
+    const tempDir = path.join('/tmp', uploadedFile.originalFilename); // Use /tmp for temporary storage
 
-    // Check if the target directory exists; if not, create it
-    if (!fs.existsSync(targetDir)) {
-      fs.mkdirSync(targetDir, { recursive: true });
-    }
-
-    // Copy the file instead of renaming
-    fs.copyFile(oldPath, newPath, (copyErr) => {
+    // Copy the file to the temporary directory
+    fs.copyFile(oldPath, tempDir, (copyErr) => {
       if (copyErr) {
-        console.error('Error moving the file:', copyErr);
+        console.error('Error moving the file to temp:', copyErr);
         return res.status(500).json({ error: 'File upload failed' });
       }
-      return res.status(200).json({ message: 'File uploaded successfully' });
+
+      // You can now use the file in tempDir for processing
+      return res.status(200).json({ message: 'File uploaded successfully', path: tempDir });
     });
   });
 };
