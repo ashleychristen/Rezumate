@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from '../styles/new.module.css';
+import Head from 'next/head';
+
 
 const Rejected = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -27,6 +29,11 @@ const Rejected = () => {
 
   return (
     <div className={styles.container}>
+        <Head>
+        <title>Rejected Resumes</title>
+        <meta name="description" content="A website showcasing images" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <div className={styles.header}>
         <div className={styles.leftSection}>
           <Link href="/">
@@ -34,7 +41,7 @@ const Rejected = () => {
           </Link>
         </div>
         <div className={styles.centerSection}>
-          <h1 className={styles.title}>Rejected Documents</h1>
+          <h1 className={styles.title}>Rejected Resumes</h1>
         </div>
         <div className={styles.rightSection}></div>
       </div>

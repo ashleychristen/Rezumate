@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from '../styles/new.module.css';
+import Head from 'next/head';
 
 const New = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -59,11 +60,15 @@ const New = () => {
       console.error('Error:', error);
     }
   };
-  
 
   return (
     <div className={styles.container}>
       {/* Header with Home button on the far left and title centered */}
+      <Head>
+        <title>New Resumes</title>
+        <meta name="description" content="A website showcasing images" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <div className={styles.header}>
         <div className={styles.leftSection}>
           <Link href="/">
@@ -71,7 +76,7 @@ const New = () => {
           </Link>
         </div>
         <div className={styles.centerSection}>
-          <h1 className={styles.title}>New Documents</h1>
+          <h1 className={styles.title}>New Resumes</h1>
         </div>
         <div className={styles.rightSection}></div> {/* Placeholder to balance flexbox */}
       </div>
@@ -97,6 +102,7 @@ const New = () => {
         {/* PDF Viewer on the right */}
         {selectedFile && (
           <div className={styles.pdfViewer}>
+            <h3>Currently Reading: {pdfFiles.find(file => file.path === selectedFile)?.name}</h3> {/* Displaying the name of the selected PDF */}
             <iframe
               src={selectedFile}
               width="1100"
@@ -126,23 +132,23 @@ const New = () => {
           <p>Current Value: {sliderValue}</p>
 
           {/* Submit Button */}
-        <button onClick={handleSubmit} className={styles.submitButton}>
-          Submit
-        </button>
+          <button onClick={handleSubmit} className={styles.submitButton}>
+            Submit
+          </button>
 
           {/* Shortlist and Reject buttons, directly under the slider */}
           <button
             className={styles.shortlistButton}
             onClick={() => {
-                console.log(`Shortlisted: ${selectedFile}`);
+              console.log(`Shortlisted: ${selectedFile}`);
 
-                // Retrieve current shortlisted files from local storage
-                const currentShortlistedFiles = JSON.parse(localStorage.getItem('shortlistedFiles')) || [];
-                
-                // Check if the file is already shortlisted
-                const fileExists = currentShortlistedFiles.some(file => file.path === selectedFile);
-                
-                if (!fileExists) {
+              // Retrieve current shortlisted files from local storage
+              const currentShortlistedFiles = JSON.parse(localStorage.getItem('shortlistedFiles')) || [];
+              
+              // Check if the file is already shortlisted
+              const fileExists = currentShortlistedFiles.some(file => file.path === selectedFile);
+              
+              if (!fileExists) {
                 // Add the new shortlisted file to the list
                 currentShortlistedFiles.push({ name: selectedFile, path: selectedFile });
 
@@ -153,42 +159,41 @@ const New = () => {
                 const currentRejectedFiles = JSON.parse(localStorage.getItem('rejectedFiles')) || [];
                 const updatedRejectedFiles = currentRejectedFiles.filter(file => file.path !== selectedFile);
                 localStorage.setItem('rejectedFiles', JSON.stringify(updatedRejectedFiles));
-                } else {
+              } else {
                 console.log("File is already shortlisted.");
-                }
+              }
             }}
-            >
+          >
             Shortlist
-            </button>
+          </button>
 
+          <button
+            className={styles.rejectButton}
+            onClick={() => {
+              console.log(`Rejected: ${selectedFile}`);
 
-            <button
-                className={styles.rejectButton}
-                onClick={() => {
-                    console.log(`Rejected: ${selectedFile}`);
+              // Retrieve current rejected files from local storage
+              const currentRejectedFiles = JSON.parse(localStorage.getItem('rejectedFiles')) || [];
 
-                    // Retrieve current rejected files from local storage
-                    const currentRejectedFiles = JSON.parse(localStorage.getItem('rejectedFiles')) || [];
+              // Check if the file is already rejected
+              const fileExists = currentRejectedFiles.some(file => file.path === selectedFile);
 
-                    // Check if the file is already rejected
-                    const fileExists = currentRejectedFiles.some(file => file.path === selectedFile);
+              if (!fileExists) {
+                // Add the new rejected file to the list
+                currentRejectedFiles.push({ name: selectedFile, path: selectedFile });
+                localStorage.setItem('rejectedFiles', JSON.stringify(currentRejectedFiles));
 
-                    if (!fileExists) {
-                    // Add the new rejected file to the list
-                    currentRejectedFiles.push({ name: selectedFile, path: selectedFile });
-                    localStorage.setItem('rejectedFiles', JSON.stringify(currentRejectedFiles));
-
-                    // Remove from shortlisted files if it exists
-                    const currentShortlistedFiles = JSON.parse(localStorage.getItem('shortlistedFiles')) || [];
-                    const updatedShortlistedFiles = currentShortlistedFiles.filter(file => file.path !== selectedFile);
-                    localStorage.setItem('shortlistedFiles', JSON.stringify(updatedShortlistedFiles));
-                    } else {
-                    console.log("File is already rejected.");
-                    }
-                }}
-                >
-                Reject
-                </button>
+                // Remove from shortlisted files if it exists
+                const currentShortlistedFiles = JSON.parse(localStorage.getItem('shortlistedFiles')) || [];
+                const updatedShortlistedFiles = currentShortlistedFiles.filter(file => file.path !== selectedFile);
+                localStorage.setItem('shortlistedFiles', JSON.stringify(updatedShortlistedFiles));
+              } else {
+                console.log("File is already rejected.");
+              }
+            }}
+          >
+            Reject
+          </button>
         </div>
       </div>
     </div>
