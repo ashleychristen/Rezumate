@@ -1,18 +1,17 @@
 // pages/fileReader.js
 
 import Link from 'next/link';
-import styles from '../styles/file.module.css';
 
 const FileReader = () => {
-  // Array of files (can be dynamically generated)
+  // Array of files (this can be dynamically generated in the future)
   const files = [
     { name: 'Resume 1', path: '/documents/ashley_resume.pdf' },
   ];
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.heading}>File Reader</h1> {/* Use className for heading */}
-      <ul className={styles.fileList}>
+    <div>
+      <h1>File Reader</h1>
+      <ul>
         {files.map((file, index) => (
           <li key={index}>
             <Link href={file.path} target="_blank">
