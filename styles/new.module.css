@@ -196,6 +196,7 @@
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px; /* Adjust margin for spacing */
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .submitButton:hover {
