@@ -6,6 +6,7 @@ import ImageScatter from '../components/ImageScatter'; // Adjust the path if nee
 import styles from '../styles/Dashboard.module.css';
 
 const Dashboard = () => {
+  // Declare the file state variable here
   const [file, setFile] = useState(null);
 
   const handleFileChange = (e) => {
@@ -13,7 +14,7 @@ const Dashboard = () => {
   };
 
   const handleUpload = async () => {
-    if (!file) return;
+    if (!file) return; // This line checks if the file is defined
 
     const formData = new FormData();
     formData.append('pdf', file);
@@ -52,7 +53,7 @@ const Dashboard = () => {
 
       {/* PDF Upload Section */}
       <div className={styles.uploadSection}>
-      <h2 className={styles.header}>Upload a PDF</h2>
+        <h2 className={styles.header}>Upload a PDF</h2>
 
         {/* Hidden file input */}
         <input

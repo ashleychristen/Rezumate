@@ -4,20 +4,21 @@ import styles from '../styles/new.module.css';
 
 const New = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [sliderValue, setSliderValue] = useState(0);
-  const [pdfFiles, setPdfFiles] = useState([]);
+  const [sliderValue, setSliderValue] = useState(0); // State to manage slider value
+  const [pdfFiles, setPdfFiles] = useState([]); // State to store fetched PDF files
 
+  // Fetch uploaded PDF files on component mount
   useEffect(() => {
     const fetchUploadedFiles = async () => {
-      const response = await fetch('/api/files');
+      const response = await fetch('/api/files'); // Fetch from the correct endpoint
       if (response.ok) {
         const data = await response.json();
-        setPdfFiles(data);
+        setPdfFiles(data); // Assuming your API returns an array of file objects
       } else {
         console.error('Failed to fetch files');
       }
     };
-
+  
     fetchUploadedFiles();
   }, []);
 
@@ -29,12 +30,9 @@ const New = () => {
     setSliderValue(event.target.value);
   };
 
-  const handleShortlist = (file) => {
-    localStorage.setItem('shortlistedFile', JSON.stringify(file));
-  };
-
   return (
     <div className={styles.container}>
+      {/* Header with Home button on the far left and title centered */}
       <div className={styles.header}>
         <div className={styles.leftSection}>
           <Link href="/">
@@ -44,10 +42,12 @@ const New = () => {
         <div className={styles.centerSection}>
           <h1 className={styles.title}>New Documents</h1>
         </div>
-        <div className={styles.rightSection}></div>
+        <div className={styles.rightSection}></div> {/* Placeholder to balance flexbox */}
       </div>
 
+      {/* Content area with buttons and PDF viewer */}
       <div className={styles.content}>
+        {/* File buttons on the left */}
         <div className={styles.buttonList}>
           <ul>
             {pdfFiles.map((file, index) => (
@@ -60,6 +60,7 @@ const New = () => {
           </ul>
         </div>
 
+        {/* PDF Viewer on the right */}
         {selectedFile && (
           <div className={styles.pdfViewer}>
             <iframe
@@ -72,35 +73,35 @@ const New = () => {
           </div>
         )}
 
-            <div className={styles.sliderContainer}>
-            <label>How well would you rate this resume?</label>
-            <div>
-                <span>0</span>
-                <input
-                type="range"
-                min="0"
-                max="10"
-                value={sliderValue}
-                onChange={handleSliderChange}
-                step="1"
-                className={styles.slider}
-                />
-                <span>10</span>
-            </div>
-            <p>Current Value: {sliderValue}</p>
+        {/* Slider for rating */}
+        <div className={styles.sliderContainer}>
+          <label>How well would you rate this resume?</label>
+          <div>
+            <span>0</span>
+            <input
+              type="range"
+              min="0"
+              max="10"
+              value={sliderValue}
+              onChange={handleSliderChange}
+              step="1" // Step to only accept integers
+              className={styles.slider}
+            />
+            <span>10</span>
+          </div>
+          <p>Current Value: {sliderValue}</p>
+        </div>
 
-            {/* Shortlist button directly below the slider */}
-            {selectedFile && (
-                <button
-                onClick={() => handleShortlist({ name: selectedFile.split('/').pop(), path: selectedFile })}
-                className={styles.shortlistButton}
-                >
-                Shortlist
-                </button>
-            )}
-            </div>
-
-
+        {/* Shortlist Button */}
+        <button
+          className={styles.shortlistButton}
+          onClick={() => {
+            // Handle shortlist action here (e.g., save to shortlist)
+            console.log(`Shortlisted: ${selectedFile}`);
+          }}
+        >
+          Shortlist
+        </button>
       </div>
     </div>
   );
