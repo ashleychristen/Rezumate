@@ -38,6 +38,43 @@ const rawData = [
 function App() {
 
   // Get data from csv
+  const [rawData, setRawData] = useState([]);
+
+  useEffect(() => {
+    // Parse CSV file into JSON
+    const fetchData = async () => {
+      const response = await fetch('./data/trial_biased5_pooled_match.csv'); // Provide the correct path to your CSV file
+      const csvText = await response.text();
+      Papa.parse(csvText, {
+        header: true,
+        dynamicTyping: true,
+        complete: (result) => {
+          // Map through the parsed data to ensure the desired format
+          const formattedData = result.data.map(item => ({
+
+            name: item.Name, // Keep as string
+            ethnicity: parseInt(item.Ethnicity), // Ensure integer
+            gender: parseInt(item.Gender), // Keep as string
+            resume_ID: item['Resume ID'], // Keep as string
+            match: parseInt(item.Match), // Ensure integer
+            length: parseInt(item.Length), // Keep as string (or convert if needed)
+            education_Prestige: parseInt(item['Education Prestige']), // Keep as string (or convert if needed)
+            gpa: parseInt(item.GPA), // Keep as string (or convert if needed)
+            hire_score: parseInt(item['Hire Score']) // Ensure integer
+
+          }));
+          setRawData(formattedData); // Set the formatted data as the rawData state
+          //setRawData(result.data); // Set the parsed data as the rawData state
+        }
+      });
+    };
+    
+    fetchData();
+  }, []);
+
+  if (rawData.length === 0) {
+    return <div>Loading...</div>; // Simple loading state until data is fetched
+  }
 
   // Split data into groups based on match percentage
   const lowMatch = rawData.filter(d => d.match >= 0 && d.match < 30);
