@@ -6,13 +6,13 @@ const ImageScatter = () => {
   return (
     <div className={styles.flexContainer}>
       <Link href="/new" className={styles.imageLink}> {/* Link to the first page */}
-        <Image src="/images/papers.png" alt="Image 1" width={150} height={150} />
+        <Image src="/images/new.png" alt="Image 1" width={150} height={150} />
       </Link>
       <Link href="/shortlisted" className={styles.imageLink}> {/* Link to the second page */}
-        <Image src="/images/papers.png" alt="Image 2" width={150} height={150} />
+        <Image src="/images/shortlist.png" alt="Image 2" width={150} height={150} />
       </Link>
       <Link href="/rejected" className={styles.imageLink}> {/* Link to the third page */}
-        <Image src="/images/papers.png" alt="Image 3" width={150} height={150} />
+        <Image src="/images/reject.png" alt="Image 3" width={150} height={150} />
       </Link>
     </div>
   );

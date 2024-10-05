@@ -201,3 +201,8 @@
 .submitButton:hover {
   background-color: #005bb5; /* Darken the button on hover */
 }
+
+.selectedButton {
+  background-color: #00aef3; /* Use your preferred color */
+  color: white; /* Change text color if needed */
+}

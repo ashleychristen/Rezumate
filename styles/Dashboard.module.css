@@ -78,3 +78,64 @@
 .uploadButton:hover {
   background-color: #003366; /* Darken the button on hover */
 }
+
+
+.textBoxSection {
+  display: flex;
+  align-items: center;
+  margin-top: 20px; /* Adjust spacing as needed */
+}
+
+.textArea {
+  resize: none; /* Disable resizing */
+  margin-right: 10px; /* Space between the text area and button */
+  width: 300px; /* Adjust width as needed */
+}
+
+.submitButton {
+  background-color: #0070f3; /* Match your color scheme */
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.flexContainer {
+  display: flex;
+  justify-content: space-between; /* Adjusts spacing between the two sections */
+  align-items: flex-start; /* Aligns the items at the start */
+  margin-top: 20px; /* Space above the sections */
+}
+
+.uploadSection {
+  flex: 1; /* Allow this section to grow */
+}
+
+.textBoxSection {
+  flex: 1; /* Allow this section to grow */
+  display: flex;
+  flex-direction: column;
+}
+
+.textArea {
+  margin-bottom: 10px; /* Space below the text area */
+  width: 100%; /* Ensure it uses the available width */
+}
+
+.submitButton {
+  /* Style for submit button if needed */
+  background-color: #0056b3; /* Button color */
+  color: white; /* Text color */
+  padding: 10px; /* Button padding */
+  border: none; /* Remove default border */
+  cursor: pointer; /* Change cursor on hover */
+  border-radius: 5px;
+  font-family: 'Times New Roman', sans-serif;
+}
+
+.header2 {
+  text-align: center;  /* Center the title */
+  margin: 20px 0;  /* Add some space above and below */
+  color: var(--deep-blue);  /* Deep Blue for the title */
+  font-size: 2em;  /* Larger font size for emphasis */
+}
