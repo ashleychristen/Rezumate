@@ -55,8 +55,8 @@ function App() {
           const formattedData = result.data.map(item => ({
 
             name: item.Name, // Keep as string
-            ethnicity: parseInt(item.Ethnicity), // Ensure integer
-            gender: parseInt(item.Gender), // Keep as string
+            ethnicity: parseInt(item['Ethnicity Bias']), // Ensure integer
+            gender: parseInt(item['Gender Bias']), // Keep as string
             resume_ID: item['Resume ID'], // Keep as string
             match: parseInt(item.Match), // Ensure integer
             length: parseInt(item.Length), // Keep as string (or convert if needed)
