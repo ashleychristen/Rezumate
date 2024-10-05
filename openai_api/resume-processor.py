@@ -9,7 +9,7 @@ client = get_openai_client()
 
 # Constants for file locations
 PDF_FOLDER = "../public/documents"
-JOB_DESCRIPTION_FILE = "../public/uploads/userInput.txt"
+JOB_DESCRIPTION_FILE = "../uploads/userInput.txt"
 VALUES_FILE = "../values.csv"
 
 # Open the PDF file
