@@ -143,7 +143,7 @@ function App() {
       <h1 className={styles.title}>Ethnicity vs Hire Score Analysis</h1>
 
       
-      {lowMatchData.r <= 0.05 && (
+      {lowMatchData.r > -1 && (
         <>
           <h4 className={styles.header3}>BIAS FOUND: Low Match (0-30%) - R: {lowMatchData.r.toFixed(2)}</h4>
           <ResponsiveContainer width="100%" height={300}>
@@ -174,7 +174,7 @@ function App() {
       )}
 
       
-      {mediumMatchData.r <= 0.05 && (
+      {mediumMatchData.r > -1 && (
         <>
           <h4 className={styles.header3}>BIAS FOUND: Medium Match (30-70%) - R: {mediumMatchData.r.toFixed(2)}</h4>
           <ResponsiveContainer width="100%" height={300}>
@@ -205,7 +205,7 @@ function App() {
       )}
 
       
-      {highMatchData.r <= 0.05 && (
+      {highMatchData.r > -1 && (
         <>
           <h4 className={styles.header3}>BIAS FOUND: High Match (70-100%) - R: {highMatchData.r.toFixed(2)}</h4>
           <ResponsiveContainer width="100%" height={300}>
