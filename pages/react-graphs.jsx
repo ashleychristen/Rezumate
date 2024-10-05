@@ -45,7 +45,7 @@ function App() {
   useEffect(() => {
     // Parse CSV file into JSON
     const fetchData = async () => {
-      const response = await fetch('./open_ai/final_resume_stats.csv'); // Provide the correct path to your CSV file
+      const response = await fetch('/data/final_resume_stats.csv'); // Provide the correct path to your CSV file
       const csvText = await response.text();
       Papa.parse(csvText, {
         header: true,
