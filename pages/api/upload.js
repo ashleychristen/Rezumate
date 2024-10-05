@@ -1,5 +1,6 @@
 import fs from 'fs';
 import formidable from 'formidable';
+import path from 'path';
 
 export const config = {
   api: {
@@ -19,7 +20,7 @@ const uploadHandler = (req, res) => {
     // Log the uploaded files
     console.log('Uploaded files:', files);
 
-    // Access the first file in the array
+    // Access the first file in the array (adjust the field name if necessary)
     const uploadedFile = files.pdf[0];
 
     if (!uploadedFile || !uploadedFile.filepath) {
@@ -28,11 +29,18 @@ const uploadHandler = (req, res) => {
     }
 
     const oldPath = uploadedFile.filepath;
-    const newPath = `public/documents/${uploadedFile.originalFilename}`;
+    const targetDir = path.join(process.cwd(), 'public/documents'); // Adjusted to use process.cwd()
+    const newPath = path.join(targetDir, uploadedFile.originalFilename); // Correctly construct the new path
 
-    fs.rename(oldPath, newPath, (err) => {
-      if (err) {
-        console.error('Error moving the file:', err);
+    // Check if the target directory exists; if not, create it
+    if (!fs.existsSync(targetDir)) {
+      fs.mkdirSync(targetDir, { recursive: true });
+    }
+
+    // Copy the file instead of renaming
+    fs.copyFile(oldPath, newPath, (copyErr) => {
+      if (copyErr) {
+        console.error('Error moving the file:', copyErr);
         return res.status(500).json({ error: 'File upload failed' });
       }
       return res.status(200).json({ message: 'File uploaded successfully' });
