@@ -9,6 +9,8 @@ import React from 'react';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid,Tooltip,ResponsiveContainer,Scatter} from 'recharts';
 import regression from 'regression';
 import styles from '../styles/Dashboard.module.css';
+import Papa from 'papaparse';
+
 
 
 // Sample raw data
@@ -43,7 +45,7 @@ function App() {
   useEffect(() => {
     // Parse CSV file into JSON
     const fetchData = async () => {
-      const response = await fetch('./data/trial_biased5_pooled_match.csv'); // Provide the correct path to your CSV file
+      const response = await fetch('./open_ai/final_resume_stats.csv'); // Provide the correct path to your CSV file
       const csvText = await response.text();
       Papa.parse(csvText, {
         header: true,
