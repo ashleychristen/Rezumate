@@ -142,3 +142,36 @@
   background-color: #2e5d3f; /* Darker shade for hover effect */
 }
 
+
+.rejectButton {
+  background-color: #a90000;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+  margin-top: 10px; /* Space above the button */
+  display: inline-block; /* Ensures button does not span full width */
+  font-family: 'Times New Roman', Times, serif;
+}
+
+/* Hover effect for both buttons */
+.shortlistButton:hover {
+  background-color: darkgreen; /* Darker forest green on hover */
+}
+
+.rejectButton:hover {
+  background-color: #720000; /* Darker red on hover */
+}
+
+
+.file-container {
+  margin-bottom: 20px;
+}
+
+.shortlist-btn-container,
+.reject-btn-container {
+  display: block;
+  margin-bottom: 10px;
+}

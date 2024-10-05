@@ -18,7 +18,7 @@ const New = () => {
         console.error('Failed to fetch files');
       }
     };
-  
+
     fetchUploadedFiles();
   }, []);
 
@@ -65,7 +65,7 @@ const New = () => {
           <div className={styles.pdfViewer}>
             <iframe
               src={selectedFile}
-              width="1100"
+              width="1000"
               height="1000"
               style={{ border: 'none' }}
               title="PDF Viewer"
@@ -75,33 +75,44 @@ const New = () => {
 
         {/* Slider for rating */}
         <div className={styles.sliderContainer}>
-          <label>How well would you rate this resume?</label>
-          <div>
+        <label>How well would you rate this resume?</label>
+        <div>
             <span>0</span>
             <input
-              type="range"
-              min="0"
-              max="10"
-              value={sliderValue}
-              onChange={handleSliderChange}
-              step="1" // Step to only accept integers
-              className={styles.slider}
+            type="range"
+            min="0"
+            max="10"
+            value={sliderValue}
+            onChange={handleSliderChange}
+            step="1"
+            className={styles.slider}
             />
             <span>10</span>
-          </div>
-          <p>Current Value: {sliderValue}</p>
+        </div>
+        <p>Current Value: {sliderValue}</p>
+
+        {/* Shortlist and Reject buttons, directly under the slider */}
+        <button
+            className={styles.shortlistButton}
+            onClick={() => {
+            // Handle shortlist action here
+            console.log(`Shortlisted: ${selectedFile}`);
+            }}
+        >
+            Shortlist
+        </button>
+
+        <button
+            className={styles.rejectButton}
+            onClick={() => {
+            // Handle reject action here
+            console.log(`Rejected: ${selectedFile}`);
+            }}
+        >
+            Reject
+        </button>
         </div>
 
-        {/* Shortlist Button */}
-        <button
-          className={styles.shortlistButton}
-          onClick={() => {
-            // Handle shortlist action here (e.g., save to shortlist)
-            console.log(`Shortlisted: ${selectedFile}`);
-          }}
-        >
-          Shortlist
-        </button>
       </div>
     </div>
   );
