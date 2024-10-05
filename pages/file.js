@@ -11,7 +11,7 @@ const FileReader = () => {
 
   return (
     <div className={styles.container}>
-      <h1>File Reader</h1>
+      <h1 className={styles.heading}>File Reader</h1> {/* Use className for heading */}
       <ul className={styles.fileList}>
         {files.map((file, index) => (
           <li key={index}>
