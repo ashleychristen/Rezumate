@@ -6,8 +6,11 @@ import csv
 client = get_openai_client()
 
 name = "Jamie Foxx" # need to grab this from the resume
+# Read names from the text file
+with open('names.txt', 'r') as names_file:
+    names = [line.strip() for line in names_file.readlines()]
 
-def get_data():
+def get_data(name):
     gender_score = ""
     ethnicity_score = ""
 
@@ -38,8 +41,10 @@ def write_to_csv(data):
         biases_writer.writerow([name, data[0], data[1]])
 
 def main():
-    data = get_data()
-    write_to_csv(data)
+    # Now you can use the names list for your further processing
+    for name in names:
+        data = get_data(name)
+        write_to_csv(data)
     
 if __name__ == "__main__":
     main()
