@@ -145,7 +145,7 @@ function App() {
       
       {lowMatchData.r > -1 && (
         <>
-          <h4 className={styles.header3}>BIAS FOUND: Low Match (0-30%) - R: {lowMatchData.r.toFixed(2)}</h4>
+          <h4 className={styles.header3}>Low Match (0-30%) - R: {lowMatchData.r.toFixed(2)}</h4>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={lowMatchData.regressionLinePoints} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -176,7 +176,7 @@ function App() {
       
       {mediumMatchData.r > -1 && (
         <>
-          <h4 className={styles.header3}>BIAS FOUND: Medium Match (30-70%) - R: {mediumMatchData.r.toFixed(2)}</h4>
+          <h4 className={styles.header3}>Medium Match (30-70%) - R: {mediumMatchData.r.toFixed(2)}</h4>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={mediumMatchData.regressionLinePoints} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -207,7 +207,7 @@ function App() {
       
       {highMatchData.r > -1 && (
         <>
-          <h4 className={styles.header3}>BIAS FOUND: High Match (70-100%) - R: {highMatchData.r.toFixed(2)}</h4>
+          <h4 className={styles.header3}>High Match (70-100%) - R: {highMatchData.r.toFixed(2)}</h4>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={highMatchData.regressionLinePoints} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" />
