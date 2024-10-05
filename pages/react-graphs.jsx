@@ -95,6 +95,11 @@ function App() {
 
   return (
     <>
+    {/* Button to go back to the home page */}
+    <button className={styles.uploadButton} onClick={() => window.location.href = '/'}>
+      Home
+      </button>
+
       
       <h1 className={styles.title}>Ethnicity vs Hire Score Analysis</h1>
 
