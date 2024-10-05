@@ -126,16 +126,19 @@ const Dashboard = () => {
         </div>
       </div>
       </div>
+      
 
-      {/* Image display */}
-      <div className={styles.imageContainer}>
-        <Image
-          src="/images/graphs.jpg"
-          alt="graphs"
-          width={1500}
-          height={500}
-          priority
-        />
+      {/* New Button with Image */}
+      <div className={styles.buttonContainer}>
+        <Link href="/react-graphs">
+            <Image
+              src="/images/graph.png" // Replace with your image path
+              alt="Go to React Page"
+              width={150}
+              height={150}
+              className={styles.imageButton}
+            />
+        </Link>
       </div>
     </div>
   );
