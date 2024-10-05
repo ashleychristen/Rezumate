@@ -2,11 +2,7 @@
   padding: 20px;
 }
 
-.title {
-  text-align: center;
-  color: #003366; /* Darker color for title */
-  font-family: 'Times New Roman', Times, serif; /* Change to Times New Roman */
-}
+
 
 .content {
   display: flex;
@@ -47,12 +43,102 @@
   margin-top: 20px; /* Space between PDF viewer and slider */
 }
 
-.slider {
-  width: 100%; /* Full width of container */
-}
-
 .sliderText {
   text-align: center; /* Center align text under the slider */
   color: #003366; /* Darker color for slider text */
   font-family: 'Times New Roman', Times, serif; /* Change to Times New Roman */
 }
+.sliderContainer {
+  margin-top: 20px; /* Spacing above the slider */
+  text-align: center; /* Center text */
+}
+
+.slider {
+  width: 100%; /* Full width of the container */
+  margin: 10px 0; /* Space above and below the slider */
+}
+
+.homeButtonContainer {
+  text-align: left; /* Align Home button to the left */
+  margin: 20px 0; /* Margin for spacing */
+}
+
+.homeButton {
+  font-size: 18px; /* Bigger font for the button */
+  background-color: #0056b3; /* Blue button color */
+  color: white; /* Text color */
+  padding: 10px 20px; /* Padding for button size */
+  border: none;
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer;
+  font-family: 'Times New Roman', sans-serif; /* Times New Roman font */
+}
+
+.homeButton:hover {
+  background-color: #003366; /* Darker blue on hover */
+}
+
+.homeButton:focus {
+  outline: none; /* Remove default focus outline */
+}
+
+/* Container for title and home button */
+.header {
+  display: flex;
+  justify-content: space-between; /* Aligns items to both ends of the container */
+  align-items: center; /* Aligns vertically */
+  margin-bottom: 20px; /* Adds space below the header */
+}
+
+
+.homeButton {
+  font-size: 18px; /* Bigger font for the button */
+  background-color: #0056b3; /* Blue button color */
+  color: white; /* Text color */
+  padding: 10px 20px; /* Padding for button size */
+  border: none;
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer;
+  font-family: 'Times New Roman', sans-serif; /* Times New Roman font */
+}
+
+.homeButton:hover {
+  background-color: #003366; /* Darker blue on hover */
+}
+
+.homeButton:focus {
+  outline: none; /* Remove default focus outline */
+}
+
+.title {
+  text-align: center;
+  color: #003366; /* Darker color for title */
+  font-family: 'Times New Roman', Times, serif; /* Change to Times New Roman */
+}
+
+.shortlistButton {
+  background-color: forestgreen;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.shortlistButton {
+  background-color: forestgreen; /* Original color */
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+  margin-top: 10px; /* Space above the button */
+  display: inline-block; /* Ensures button does not span full width */
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.shortlistButton:hover {
+  background-color: #2e5d3f; /* Darker shade for hover effect */
+}
+
