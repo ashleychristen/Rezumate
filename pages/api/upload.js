@@ -1,10 +1,7 @@
-// pages/api/upload.js
-
 import fs from 'fs';
 import formidable from 'formidable';
 import path from 'path';
 
-// Configure API options
 export const config = {
   api: {
     bodyParser: false,
@@ -20,11 +17,11 @@ const uploadHandler = (req, res) => {
       return res.status(500).json({ error: 'Something went wrong while uploading the file' });
     }
 
-    // Log the uploaded files for debugging
+    // Log the uploaded files
     console.log('Uploaded files:', files);
 
-    // Ensure the file field name matches your upload form
-    const uploadedFile = files.pdf; // Make sure the field name matches your upload form
+    // Access the first file in the array (adjust the field name if necessary)
+    const uploadedFile = files.pdf[0];
 
     if (!uploadedFile || !uploadedFile.filepath) {
       console.error('File path is undefined');
@@ -32,18 +29,20 @@ const uploadHandler = (req, res) => {
     }
 
     const oldPath = uploadedFile.filepath;
-    const tempDir = path.join('/tmp', uploadedFile.originalFilename); // Use /tmp for temporary storage
+    const targetDir = path.join(process.cwd(), 'public/documents'); // Adjusted to use process.cwd()
+    const newPath = path.join(targetDir, uploadedFile.originalFilename); // Correctly construct the new path
 
-    // Copy the file to the temporary directory
-    fs.copyFile(oldPath, tempDir, (copyErr) => {
+    // Check if the target directory exists; if not, create it
+    if (!fs.existsSync(targetDir)) {
+      fs.mkdirSync(targetDir, { recursive: true });
+    }
+    // Copy the file instead of renaming
+    fs.copyFile(oldPath, newPath, (copyErr) => {
       if (copyErr) {
-        console.error('Error moving the file to temp:', copyErr);
+        console.error('Error moving the file:', copyErr);
         return res.status(500).json({ error: 'File upload failed' });
       }
-
-      // Log success and return the file path
-      console.log(`File uploaded successfully to ${tempDir}`);
-      return res.status(200).json({ message: 'File uploaded successfully', path: tempDir });
+      return res.status(200).json({ message: 'File uploaded successfully' });
     });
   });
 };

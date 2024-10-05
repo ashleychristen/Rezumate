@@ -1,44 +1,21 @@
-// pages/fileReader.js
+import fs from 'fs';
+import path from 'path';
 
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+const filesHandler = (req, res) => {
+  const directoryPath = path.join(process.cwd(), 'public/documents');
 
-const FileReader = () => {
-  const [files, setFiles] = useState([]); // State to hold file names
+  fs.readdir(directoryPath, (err, files) => {
+    if (err) {
+      return res.status(500).json({ error: 'Unable to scan directory: ' + err });
+    }
 
-  useEffect(() => {
-    const fetchFiles = async () => {
-      // Fetch the list of files from the /tmp directory
-      try {
-        const response = await fetch('/api/getFiles'); // API endpoint to list files
-        if (response.ok) {
-          const fileList = await response.json();
-          setFiles(fileList);
-        } else {
-          console.error('Failed to fetch files');
-        }
-      } catch (error) {
-        console.error('Error fetching files:', error);
-      }
-    };
+    const pdfFiles = files.map(file => ({
+      name: file,
+      path: `/documents/${file}` // Serve files from public/documents
+    }));
 
-    fetchFiles();
-  }, []);
-
-  return (
-    <div>
-      <h1>File Reader</h1>
-      <ul>
-        {files.map((file, index) => (
-          <li key={index}>
-            <Link href={`/api/getFiles/${file}`} target="_blank"> {/* Adjust the path if necessary */}
-              {file}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+    res.status(200).json(pdfFiles);
+  });
 };
 
-export default FileReader;
+export default filesHandler;

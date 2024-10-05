@@ -1,12 +1,27 @@
-// pages/fileReader.js
-
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 const FileReader = () => {
-  // Array of files (this can be dynamically generated in the future)
-  const files = [
-    { name: 'Resume 1', path: '/documents/ashley_resume.pdf' },
-  ];
+  const [files, setFiles] = useState([]); // State to hold file names
+
+  useEffect(() => {
+    const fetchFiles = async () => {
+      // Fetch the list of files from the uploads directory
+      try {
+        const response = await fetch('/api/files'); // API endpoint to list files
+        if (response.ok) {
+          const fileList = await response.json();
+          setFiles(fileList);
+        } else {
+          console.error('Failed to fetch files');
+        }
+      } catch (error) {
+        console.error('Error fetching files:', error);
+      }
+    };
+
+    fetchFiles();
+  }, []);
 
   return (
     <div>
@@ -14,8 +29,8 @@ const FileReader = () => {
       <ul>
         {files.map((file, index) => (
           <li key={index}>
-            <Link href={file.path} target="_blank">
-              {file.name}
+            <Link href={`/uploads/${file}`} target="_blank"> {/* Adjust the path if necessary */}
+              {file}
             </Link>
           </li>
         ))}
