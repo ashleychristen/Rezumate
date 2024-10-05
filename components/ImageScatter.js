@@ -14,6 +14,9 @@ const ImageScatter = () => {
       <Link href="/rejected" className={styles.imageLink}> {/* Link to the third page */}
         <Image src="/images/reject.png" alt="Image 3" width={150} height={150} />
       </Link>
+      <Link href="/react-graphs" className={styles.imageLink}> {/* Link to the third page */}
+        <Image src="/images/graph.png" alt="Image 3" width={150} height={150} />
+      </Link>
     </div>
   );
 };
