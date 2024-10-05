@@ -160,7 +160,7 @@ def read_values_file():
     return values_dict
 
 def write_to_csv(all_resume_stats, hire_scores):
-    with open('final_resume_stats.csv', mode='a', newline='') as resume_stats_file:
+    with open('../final_resume_stats.csv', mode='a', newline='') as resume_stats_file:
         resume_stats_writer = csv.writer(resume_stats_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         resume_stats_writer.writerow(['Name', 'Resume ID', 'Match', 'Length', 'Education Prestige', 'GPA', 'Ethnicity Bias', 'Gender Bias', 'Hire Score'])
 
