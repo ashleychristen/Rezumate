@@ -1,0 +1,17 @@
+/* styles/ImageScatter.module.css */
+
+.flexContainer {
+  display: flex; /* Use flexbox for layout */
+  justify-content: center; /* Center the images horizontally */
+  flex-wrap: wrap; /* Allow wrapping to the next line */
+  gap: 20px; /* Space between images */
+}
+
+.imageLink {
+  display: block; /* Ensure the link behaves like a block element */
+  transition: transform 0.2s; /* Smooth transition for hover effect */
+}
+
+.imageLink:hover {
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
