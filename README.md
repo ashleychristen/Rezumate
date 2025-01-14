@@ -57,3 +57,6 @@ Check us out at https://rezumate.onrender.com/.
 
 ## Conclusion
 Rezumate aims to empower HR professionals by providing valuable insights into their hiring practices, ultimately promoting inclusivity and fairer decision-making. We are excited about the potential impact of this tool and look forward to future enhancements.
+
+## Links
+Demo video: https://drive.google.com/file/d/1GshyE281Egh6A-62s9U_vEUZxnkP6KOG/view?usp=sharing 
